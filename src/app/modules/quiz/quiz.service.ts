@@ -10,7 +10,7 @@ export const createQuizService = async (payload: Quiz): Promise<Quiz> => {
   return quiz;
 };
 //get all quiz
-export const getAllQuizService = async (categoryId: string): Promise<Quiz[]> => {
+export const getAllQuizService = async (): Promise<Quiz[]> => {
   const quizes = await prisma.quiz.findMany({
     include: {
       category: true,

@@ -27,48 +27,74 @@ CREATE TABLE "categories" (
 CREATE TABLE "questions" (
     "id" TEXT NOT NULL,
     "question_text" TEXT NOT NULL,
-    "correct_answers" TEXT[],
-    "options" TEXT[],
     "marks" INTEGER NOT NULL,
     "categoryId" TEXT NOT NULL,
+    "multiple" BOOLEAN NOT NULL DEFAULT true,
+    "quizId" TEXT NOT NULL,
 
     CONSTRAINT "questions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "correctAnswers" (
+    "id" TEXT NOT NULL,
+    "answer" TEXT NOT NULL,
+    "questionId" TEXT NOT NULL,
+
+    CONSTRAINT "correctAnswers_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "options" (
+    "id" TEXT NOT NULL,
+    "option" TEXT NOT NULL,
+    "questionId" TEXT NOT NULL,
+
+    CONSTRAINT "options_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "quizSessions" (
     "id" TEXT NOT NULL,
     "performer" TEXT NOT NULL,
-    "start_time" TEXT NOT NULL,
-    "end_time" TEXT NOT NULL,
     "score" INTEGER NOT NULL,
 
     CONSTRAINT "quizSessions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "quizQuestions" (
+CREATE TABLE "quizes" (
     "id" TEXT NOT NULL,
-    "quizQuestions" TEXT[],
+    "title" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "quizSessionId" TEXT NOT NULL,
 
-    CONSTRAINT "quizQuestions_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "quizes_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "quizQuestions_quizSessionId_key" ON "quizQuestions"("quizSessionId");
+CREATE UNIQUE INDEX "quizes_quizSessionId_key" ON "quizes"("quizSessionId");
 
 -- AddForeignKey
 ALTER TABLE "questions" ADD CONSTRAINT "questions_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "questions" ADD CONSTRAINT "questions_quizId_fkey" FOREIGN KEY ("quizId") REFERENCES "quizes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "correctAnswers" ADD CONSTRAINT "correctAnswers_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "questions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "options" ADD CONSTRAINT "options_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "questions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "quizSessions" ADD CONSTRAINT "quizSessions_performer_fkey" FOREIGN KEY ("performer") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "quizQuestions" ADD CONSTRAINT "quizQuestions_quizSessionId_fkey" FOREIGN KEY ("quizSessionId") REFERENCES "quizSessions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "quizes" ADD CONSTRAINT "quizes_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "quizQuestions" ADD CONSTRAINT "quizQuestions_quizQuestions_fkey" FOREIGN KEY ("quizQuestions") REFERENCES "questions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "quizes" ADD CONSTRAINT "quizes_quizSessionId_fkey" FOREIGN KEY ("quizSessionId") REFERENCES "quizSessions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

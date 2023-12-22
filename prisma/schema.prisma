@@ -74,9 +74,9 @@ model QuizSession {
   id          String @id @default(uuid())
   performer   String
   score       Int
-  quiz Quiz?
+  quizid      String
   user        User   @relation(fields: [performer], references: [id])
-  
+  quiz        Quiz  @relation(fields: [quizid], references: [id])
   @@map("quizSessions")
 }
 //---quizQuestions
@@ -86,9 +86,7 @@ model Quiz {
   categoryId    String
   category       Category  @relation(fields: [categoryId], references: [id])
   questions Question[]
-  quizSessionId String @unique
-  quizSession        QuizSession  @relation(fields: [quizSessionId], references: [id])
-  
+  quizSession    QuizSession[]  
   
   
 
