@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//-----user
+model User {
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             USER_ROLE?        @default(customer)
+  contactNo        String
+  address          String
+  profileImg       String
+  
+
+  @@map("users")
+}
+
+//----category
+model Category {
+  id    String @id @default(uuid())
+  title String
+  questions Question[]
+
+
+  @@map("categories")
+}
+
+//-----book
+model Question {
+  id               String            @id @default(uuid())
+  title            String
+  correctAns       String
+  price            Float
+  genre            String
+  publicationDate  String
+  categoryId       String
+  category         Category          @relation(fields: [categoryId], references: [id])
+  
+
+
+  @@map("questions")
+}
+
+//-----ReviewAndRating
+model ReviewAndRating {
+  id     String @id @default(uuid())
+  review String
+  rating String
+  userId String
+  bookId String
+  
+
+
+  @@map("reviewAndRatings")
+}
+
+
+
+
+
+////------enums
+enum USER_ROLE {
+  admin
+  performer
+}
+
+enum ORDER_STATUS {
+  pending
+  shipped
+  delivered
+}
