@@ -22,8 +22,8 @@ export const updateAnswerZodSchema = z.object({
     }),
   }),
   body: z.object({
-    answer: z.string().nonempty().optional(),
-    questionId: z.string().nonempty().optional(),
+    answer: z.string().optional(),
+    questionId: z.string().optional(),
   }),
 });
 

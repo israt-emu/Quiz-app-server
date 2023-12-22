@@ -22,8 +22,8 @@ export const updateOptionZodSchema = z.object({
     }),
   }),
   body: z.object({
-    option: z.string().nonempty().optional(),
-    questionId: z.string().nonempty().optional(),
+    option: z.string().optional(),
+    questionId: z.string().optional(),
   }),
 });
 

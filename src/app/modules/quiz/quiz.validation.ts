@@ -22,8 +22,8 @@ export const updateQuizZodSchema = z.object({
     }),
   }),
   body: z.object({
-    title: z.string().nonempty().optional(),
-    categoryId: z.string().nonempty().optional(),
+    title: z.string().optional(),
+    categoryId: z.string().optional(),
   }),
 });
 
