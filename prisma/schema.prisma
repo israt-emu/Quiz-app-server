@@ -30,7 +30,7 @@ model Category {
   id    String @id @default(uuid())
   title String
   questions Question[]
-
+  quiz   Quiz[]
 
   @@map("categories")
 }
@@ -73,8 +73,6 @@ model Option{
 model QuizSession {
   id          String @id @default(uuid())
   performer   String
-  start_time  String
-  end_time    String
   score       Int
   quiz Quiz?
   user        User   @relation(fields: [performer], references: [id])
@@ -85,9 +83,12 @@ model QuizSession {
 model Quiz {
   id          String @id @default(uuid())
   title       String
+  categoryId    String
+  category       Category  @relation(fields: [categoryId], references: [id])
   questions Question[]
   quizSessionId String @unique
   quizSession        QuizSession  @relation(fields: [quizSessionId], references: [id])
+  
   
   
 
