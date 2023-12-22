@@ -7,7 +7,7 @@ import {createCategory, deleteCategory, getAllCategories, getSingleCategory, upd
 
 const router = Router();
 
-router.post("/create-category", validateRequest(createOrUpdateCategoryZodSchema), auth(ENUM_USER_ROLE.ADMIN), createCategory);
+router.post("/", validateRequest(createOrUpdateCategoryZodSchema), auth(ENUM_USER_ROLE.ADMIN), createCategory);
 
 router.get("/", getAllCategories);
 

@@ -33,7 +33,7 @@ export const updateUserZodSchema = z.object({
       name: z.string().optional(),
       email: z.string().email().optional(),
       password: z.string().optional(),
-      role: z.enum(["admin", "customer"]).default("customer").optional(),
+      role: z.enum(["admin", "performer"]).default("performer").optional(),
       contactNo: z.string().optional(),
       address: z.string().optional(),
       profileImg: z.string().optional(),

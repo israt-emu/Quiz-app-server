@@ -16,11 +16,11 @@ model User {
   name             String
   email            String            @unique
   password         String
-  role             USER_ROLE?        @default(customer)
+  role             USER_ROLE?        @default(performer)
   contactNo        String
   address          String
   profileImg       String
-  
+  quizSessions     QuizSession[]
 
   @@map("users")
 }
@@ -35,35 +35,64 @@ model Category {
   @@map("categories")
 }
 
-//-----book
+//-----question
 model Question {
   id               String            @id @default(uuid())
-  title            String
-  correctAns       String
-  price            Float
-  genre            String
-  publicationDate  String
+  question_text    String
+  correct_answers  CorrectAnswer[]
+  options          Option[]
+  marks            Int
   categoryId       String
+  multiple         Boolean   @default(true)
   category         Category          @relation(fields: [categoryId], references: [id])
-  
-
+  quizId             String
+  quiz        Quiz   @relation(fields: [quizId], references: [id])
 
   @@map("questions")
 }
-
-//-----ReviewAndRating
-model ReviewAndRating {
-  id     String @id @default(uuid())
-  review String
-  rating String
-  userId String
-  bookId String
+//----correct answer
+model CorrectAnswer {
+  id           String         @id @default(uuid())
+  answer       String
+  questionId   String
+  question        Question   @relation(fields: [questionId], references: [id])
   
+  @@map("correctAnswers")
+}
+//----options
+model Option{
+  id           String @id @default(uuid())
+  option       String
+  questionId   String
+  question        Question   @relation(fields: [questionId], references: [id])
 
-
-  @@map("reviewAndRatings")
+  @@map("options")
 }
 
+//-----QuizSession
+model QuizSession {
+  id          String @id @default(uuid())
+  performer   String
+  start_time  String
+  end_time    String
+  score       Int
+  quiz Quiz?
+  user        User   @relation(fields: [performer], references: [id])
+  
+  @@map("quizSessions")
+}
+//---quizQuestions
+model Quiz {
+  id          String @id @default(uuid())
+  title       String
+  questions Question[]
+  quizSessionId String @unique
+  quizSession        QuizSession  @relation(fields: [quizSessionId], references: [id])
+  
+  
+
+  @@map("quizes")
+}
 
 
 
@@ -74,8 +103,3 @@ enum USER_ROLE {
   performer
 }
 
-enum ORDER_STATUS {
-  pending
-  shipped
-  delivered
-}

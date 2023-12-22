@@ -2,30 +2,30 @@ import {Category} from "@prisma/client";
 import httpStatus from "http-status";
 import prisma from "../../../shared/prisma";
 import {ApiError} from "../../../handleErrors/ApiError";
-
+//create category
 export const createCategoryService = async (payload: Category): Promise<Category> => {
   const category = await prisma.category.create({
     data: payload,
   });
   return category;
 };
-
+//get all category
 export const getAllCategorieService = async (): Promise<Category[]> => {
   const categories = await prisma.category.findMany({
     include: {
-      books: true,
+      questions: true,
     },
   });
   return categories;
 };
-
+//get single category
 export const getSingleCategoryService = async (id: string): Promise<Category | null> => {
   const category = await prisma.category.findUnique({
     where: {
       id,
     },
     include: {
-      books: true,
+      questions: true,
     },
   });
 
@@ -35,7 +35,7 @@ export const getSingleCategoryService = async (id: string): Promise<Category | n
 
   return category;
 };
-
+//update category
 export const updateCategoryService = async (id: string, payload: Partial<Category>): Promise<Category | null> => {
   const category = await prisma.category.findUnique({
     where: {
@@ -56,7 +56,7 @@ export const updateCategoryService = async (id: string, payload: Partial<Categor
 
   return updatedCategory;
 };
-
+//delete category
 export const deleteCategoryService = async (id: string): Promise<Category | null> => {
   const category = await prisma.category.findUnique({
     where: {
