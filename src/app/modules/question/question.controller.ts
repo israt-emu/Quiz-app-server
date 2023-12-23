@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 import {catchAsync} from "../../../shared/catchAsync";
 
 import {sendResponse} from "../../../shared/sendResponse";
-import {createQuestionService, deleteQuestionService, getAllQuestionService, getQuestionByCategoryService, getSingleQuestionService, updateQuestionService} from "./question.service";
+import {createQuestionService, deleteQuestionService, getAllQuestionService, getQuestionByCategoryService, getQuestionByQuizService, getSingleQuestionService, updateQuestionService} from "./question.service";
 //create Question
 export const createQuestion = catchAsync(async (req, res) => {
   const Question = await createQuestionService(req.body);
@@ -28,6 +28,17 @@ export const getAllQuestions = catchAsync(async (req, res) => {
 //get Questions by category
 export const getQuestionByCategory = catchAsync(async (req, res) => {
   const questions = await getQuestionByCategoryService(req.params.categoryId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Questions retrieved successfully!",
+    data: questions,
+  });
+});
+//get Questions by quiz
+export const getQuestionByQuiz = catchAsync(async (req, res) => {
+  const questions = await getQuestionByQuizService(req.params.quizId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

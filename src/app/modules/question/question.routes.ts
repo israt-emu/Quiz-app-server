@@ -15,5 +15,6 @@ router.post("/", validateRequest(createQuestionZodSchema), auth(ENUM_USER_ROLE.A
 router.route("/:id").get(getSingleQuestion).patch(validateRequest(updateQuestionZodSchema), auth(ENUM_USER_ROLE.ADMIN), updateQuestion).delete(validateRequest(deleteQuestionZodSchema), auth(ENUM_USER_ROLE.ADMIN), deleteQuestion);
 
 router.get("/category/:categoryId", getQuestionByCategory);
+router.get("/quiz/:quizId", getQuestionByCategory);
 
 export const QuestionRoutes = router;

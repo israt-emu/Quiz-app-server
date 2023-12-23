@@ -27,6 +27,18 @@ export const getQuestionByCategoryService = async (categoryId: string): Promise<
   });
   return books;
 };
+export const getQuestionByQuizService = async (quizId: string): Promise<Question[]> => {
+  const books = await prisma.question.findMany({
+    where: {
+       quizId,
+    },
+    include: {
+      category: true,
+      quiz:true
+    },
+  });
+  return books;
+};
 //get single question
 export const getSingleQuestionService = async (id: string): Promise<Question | null> => {
   const question = await prisma.question.findUnique({
@@ -35,6 +47,7 @@ export const getSingleQuestionService = async (id: string): Promise<Question | n
     },
     include: {
       category: true,
+      quiz:true
     },
   });
 
