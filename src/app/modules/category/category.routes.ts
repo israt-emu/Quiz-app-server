@@ -7,10 +7,27 @@ import {createCategory, deleteCategory, getAllCategories, getSingleCategory, upd
 
 const router = Router();
 
-router.post("/", validateRequest(createOrUpdateCategoryZodSchema), auth(ENUM_USER_ROLE.ADMIN), createCategory);
+router.post(
+  "/",
+  validateRequest(createOrUpdateCategoryZodSchema),
+  // auth(ENUM_USER_ROLE.ADMIN),
+  createCategory
+);
 
 router.get("/", getAllCategories);
 
-router.route("/:id").get(getSingleCategory).patch(validateRequest(createOrUpdateCategoryZodSchema), auth(ENUM_USER_ROLE.ADMIN), updateCategory).delete(validateRequest(deleteCategoryZodSchema), auth(ENUM_USER_ROLE.ADMIN), deleteCategory);
+router
+  .route("/:id")
+  .get(getSingleCategory)
+  .patch(
+    validateRequest(createOrUpdateCategoryZodSchema),
+    // auth(ENUM_USER_ROLE.ADMIN),
+    updateCategory
+  )
+  .delete(
+    validateRequest(deleteCategoryZodSchema),
+    // auth(ENUM_USER_ROLE.ADMIN),
+    deleteCategory
+  );
 
 export const CategoryRoutes = router;

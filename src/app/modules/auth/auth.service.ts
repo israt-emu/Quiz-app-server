@@ -43,12 +43,12 @@ export const loginUserService = async (payload: ILoginUser): Promise<ILoginRespo
     throw new ApiError(httpStatus.UNAUTHORIZED, "Password is incorrect");
   }
   //create accesstoken & refresh token
-  const {id: userId, role} = isUserExist;
-  const accessToken = createToken({userId, role}, config.jwt.secret as Secret, {
+  const {id: userId, role, email: userEmail} = isUserExist;
+  const accessToken = createToken({userId, role, userEmail}, config.jwt.secret as Secret, {
     expiresIn: config.jwt.expires_in,
   });
 
-  const refreshToken = createToken({userId, role}, config.jwt.refresh_secret as Secret, {expiresIn: config.jwt.refresh_expires_in});
+  const refreshToken = createToken({userId, role, userEmail}, config.jwt.refresh_secret as Secret, {expiresIn: config.jwt.refresh_expires_in});
 
   return {
     accessToken,

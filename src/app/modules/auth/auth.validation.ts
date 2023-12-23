@@ -8,7 +8,7 @@ export const createUserZodSchema = z.object({
         message: "Email is required",
       }),
       password: z.string({required_error: "password is required"}),
-      role: z.enum(["admin", "customer"]).default("customer"),
+      role: z.enum(["admin", "performer"]).default("performer"),
       contactNo: z.string({
         required_error: "Contact number is required",
       }),
